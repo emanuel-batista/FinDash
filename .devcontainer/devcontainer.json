@@ -23,6 +23,11 @@
   // 6. Diz ao Codespaces para parar os containers quando fechar o VS Code
   "shutdownAction": "stopCompose",
 
+  "features": {
+    // Esta linha específica instala o Git LFS
+    "ghcr.io/devcontainers/features/git-lfs:1": {}
+  },
+
   // 7. Instala extensões úteis do VS Code no Codespace
   "customizations": {
     "vscode": {
