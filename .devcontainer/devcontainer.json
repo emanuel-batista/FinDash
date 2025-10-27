@@ -1,0 +1,38 @@
+// .devcontainer/devcontainer.json
+{
+  "name": "FinDash Project",
+
+  // 1. Diz ao Codespaces para usar o docker-compose
+  "dockerComposeFile": "docker-compose.yml",
+
+  // 2. Diz qual dos serviços do docker-compose é o seu ambiente de DEV
+  // (Vamos criar um serviço 'app' só para isso no próximo passo)
+  // Por enquanto, vamos dizer para ele rodar em um container genérico.
+  // UMA ABORDAGEM MAIS SIMPLES:
+  "image": "mcr.microsoft.com/devcontainers/java:17-bullseye",
+  
+  // 3. Quais serviços do docker-compose.yml devem subir JUNTOS
+  "runServices": ["postgres-db", "rabbitmq"],
+
+  // 4. Diz ao Codespaces para parar os containers quando fechar o VS Code
+  "shutdownAction": "stopCompose",
+
+  // 5. Instala extensões úteis do VS Code no Codespace
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",         // Pacote Java
+        "pivotal.vscode-spring-boot",       // Spring Boot
+        "vmware.vscode-spring-boot-dashboard",
+        "esbenp.prettier-vscode",           // Para o React
+        "dbaeumer.vscode-eslint"            // Para o React
+      ]
+    }
+  },
+
+  // 6. Encaminha as portas dos serviços para você
+  "forwardPorts": [5432, 15672, 8080, 8081, 8082, 3000],
+
+  // 7. Comando para rodar DEPOIS que tudo estiver pronto
+  "postCreateCommand": "java -version && node -v && npm -v"
+}
