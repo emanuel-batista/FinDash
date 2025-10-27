@@ -2,37 +2,43 @@
 {
   "name": "FinDash Project",
 
-  // 1. Diz ao Codespaces para usar o docker-compose
+  // 1. Aponta para o docker-compose.yml (Isto está correto)
   "dockerComposeFile": "docker-compose.yml",
 
-  // 2. Diz qual dos serviços do docker-compose é o seu ambiente de DEV
-  // (Vamos criar um serviço 'app' só para isso no próximo passo)
-  // Por enquanto, vamos dizer para ele rodar em um container genérico.
-  // UMA ABORDAGEM MAIS SIMPLES:
-  "image": "mcr.microsoft.com/devcontainers/java:17-bullseye",
-  
-  // 3. Quais serviços do docker-compose.yml devem subir JUNTOS
+  // 2. [CORREÇÃO] Aponta para o serviço "app" que acabamos de criar.
+  //    (Este era o erro "propriedade 'service' está ausente")
+  "service": "app",
+
+  // 3. [CORREÇÃO] Diz onde o VS Code deve abrir o projeto DENTRO do container "app".
+  //    (Este era o erro "propriedade 'workspaceFolder' está ausente")
+  "workspaceFolder": "/workspace/findash",
+
+  // 4. [REMOVIDO] A propriedade "image" foi removida daqui
+  //    (Este era o erro "propriedade 'image' não é permitida")
+
+  // 5. Quais serviços do docker-compose.yml devem subir JUNTOS
+  //    (Deixamos "app" de fora, pois o "service" já cuida dele)
   "runServices": ["postgres-db", "rabbitmq"],
 
-  // 4. Diz ao Codespaces para parar os containers quando fechar o VS Code
+  // 6. Diz ao Codespaces para parar os containers quando fechar o VS Code
   "shutdownAction": "stopCompose",
 
-  // 5. Instala extensões úteis do VS Code no Codespace
+  // 7. Instala extensões úteis do VS Code no Codespace
   "customizations": {
     "vscode": {
       "extensions": [
-        "vscjava.vscode-java-pack",         // Pacote Java
-        "pivotal.vscode-spring-boot",       // Spring Boot
+        "vscjava.vscode-java-pack",
+        "pivotal.vscode-spring-boot",
         "vmware.vscode-spring-boot-dashboard",
-        "esbenp.prettier-vscode",           // Para o React
-        "dbaeumer.vscode-eslint"            // Para o React
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
       ]
     }
   },
 
-  // 6. Encaminha as portas dos serviços para você
+  // 8. Encaminha as portas dos serviços para você
   "forwardPorts": [5432, 15672, 8080, 8081, 8082, 3000],
 
-  // 7. Comando para rodar DEPOIS que tudo estiver pronto
-  "postCreateCommand": "java -version && node -v && npm -v"
+  // 9. Comando para rodar DEPOIS que tudo estiver pronto (Dentro do container "app")
+  "postCreateCommand": "java -version"
 }

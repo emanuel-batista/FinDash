@@ -2,29 +2,42 @@
 version: '3.8'
 
 services:
-  # Serviço 1: Banco de Dados
+  # SERVIÇO NOVO: O seu ambiente de desenvolvimento
+  app:
+    # Esta é a imagem que eu tinha colocado no lugar errado
+    image: mcr.microsoft.com/devcontainers/java:17-bullseye
+    
+    # Monta o seu código local (..) dentro do container
+    # O "workspaceFolder" que definiremos depois deve bater com o path aqui
+    volumes:
+      - ..:/workspace/findash:cached
+
+    # Comando para manter o container rodando para sempre
+    command: sleep infinity
+
+  # Serviço 2: Banco de Dados
   postgres-db:
     image: postgres:15-alpine
     restart: unless-stopped
     ports:
-      - "5432:5432" # Expõe a porta do Postgres para o seu app
+      - "5432:5432"
     environment:
       - POSTGRES_USER=findash
       - POSTGRES_PASSWORD=findash
       - POSTGRES_DB=findash_db
     volumes:
-      - postgres-data:/var/lib/postgresql/data # Garante que os dados persistam
+      - postgres-data:/var/lib/postgresql/data
 
-  # Serviço 2: Mensageria
+  # Serviço 3: Mensageria
   rabbitmq:
     image: rabbitmq:3-management-alpine
     restart: unless-stopped
     ports:
-      - "5672:5672"   # Porta do protocolo AMQP
-      - "15672:15672" # Porta do painel de admin web
+      - "5672:5672"
+      - "15672:15672"
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
 
 volumes:
-  postgres-data: # Define o volume
+  postgres-data:
