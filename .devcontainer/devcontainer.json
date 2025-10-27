@@ -39,7 +39,7 @@
   },
 
   // 8. Encaminha as portas (continua igual)
-  "forwardPorts": [5432, 15672, 8080, 8081, 8082, 3000],
+  "forwardPorts": [5433, 15672, 8080, 8081, 8082, 3000],
 
   // 9. Comando pós-criação (continua igual)
   "postCreateCommand": "java -version && git lfs --version"
