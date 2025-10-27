@@ -1,31 +1,16 @@
 // .devcontainer/devcontainer.json
 {
   "name": "FinDash Project",
-
-  // 1. Aponta para o docker-compose
   "dockerComposeFile": "docker-compose.yml",
-
-  // 2. [CORREÇÃO] Aponta para o serviço "app" do compose
-  //    (Resolve "propriedade 'service' está ausente")
   "service": "app",
-
-  // 3. [REMOVIDO] "image" não é mais usada aqui
-  //    (Resolve "propriedade 'image' não é permitida")
-
-  // 4. Diz onde o VS Code deve abrir (caminho dentro do container)
   "workspaceFolder": "/workspace/findash",
-
-  // 5. Quais serviços extras devem subir juntos
   "runServices": ["postgres-db", "rabbitmq"],
-
   "shutdownAction": "stopCompose",
 
-  // 6. Features serão instaladas DENTRO do serviço "app"
   "features": {
     "ghcr.io/devcontainers/features/git-lfs:1": {}
   },
 
-  // 7. Extensões (continua igual)
   "customizations": {
     "vscode": {
       "extensions": [
@@ -38,9 +23,19 @@
     }
   },
 
-  // 8. Encaminha as portas (continua igual)
-  "forwardPorts": [5433, 15672, 8080, 8081, 8082, 3000],
+  // 8. [MUDANÇA] Encaminha as NOVAS portas seguras
+  "forwardPorts": [
+    // Dependências
+    15432, // Postgres
+    15673, // RabbitMQ Admin
+    15674, // RabbitMQ Protocol
 
-  // 9. Comando pós-criação (continua igual)
+    // Aplicações (Já separadas para evitar futuros conflitos)
+    18080, // Spring App 1 (AccountService)
+    18081, // Spring App 2 (TransactionService)
+    18082, // Spring App 3 (MarketDataService)
+    13000  // React App
+  ],
+
   "postCreateCommand": "java -version && git lfs --version"
 }

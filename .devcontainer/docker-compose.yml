@@ -2,16 +2,11 @@
 version: '3.8'
 
 services:
-  # Serviço 1: O seu ambiente de desenvolvimento
+  # Serviço 1: O seu ambiente de desenvolvimento (App)
   app:
-    # A imagem é definida AQUI
     image: mcr.microsoft.com/devcontainers/java:17-bullseye
-    
-    # Monta o seu código dentro do container
     volumes:
       - ..:/workspace/findash:cached
-
-    # Mantém o container rodando
     command: sleep infinity
 
   # Serviço 2: Banco de Dados
@@ -19,7 +14,8 @@ services:
     image: postgres:15-alpine
     restart: unless-stopped
     ports:
-      - "5433:5432"
+      # MUDANÇA: Mapeado para 15432 para evitar conflito
+      - "15432:5432" 
     environment:
       - POSTGRES_USER=findash
       - POSTGRES_PASSWORD=findash
@@ -32,8 +28,10 @@ services:
     image: rabbitmq:3-management-alpine
     restart: unless-stopped
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      # MUDANÇA: Porta do protocolo movida para 15674
+      - "15674:5672"
+      # MUDANÇA: Porta do Admin movida para 15673
+      - "15673:15672"
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
