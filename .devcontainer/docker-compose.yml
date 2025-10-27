@@ -2,17 +2,16 @@
 version: '3.8'
 
 services:
-  # SERVIÇO NOVO: O seu ambiente de desenvolvimento
+  # Serviço 1: O seu ambiente de desenvolvimento
   app:
-    # Esta é a imagem que eu tinha colocado no lugar errado
+    # A imagem é definida AQUI
     image: mcr.microsoft.com/devcontainers/java:17-bullseye
     
-    # Monta o seu código local (..) dentro do container
-    # O "workspaceFolder" que definiremos depois deve bater com o path aqui
+    # Monta o seu código dentro do container
     volumes:
       - ..:/workspace/findash:cached
 
-    # Comando para manter o container rodando para sempre
+    # Mantém o container rodando
     command: sleep infinity
 
   # Serviço 2: Banco de Dados

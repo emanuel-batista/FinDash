@@ -2,33 +2,30 @@
 {
   "name": "FinDash Project",
 
-  // 1. Aponta para o docker-compose.yml (Isto está correto)
+  // 1. Aponta para o docker-compose
   "dockerComposeFile": "docker-compose.yml",
 
-  // 2. [CORREÇÃO] Aponta para o serviço "app" que acabamos de criar.
-  //    (Este era o erro "propriedade 'service' está ausente")
+  // 2. [CORREÇÃO] Aponta para o serviço "app" do compose
+  //    (Resolve "propriedade 'service' está ausente")
   "service": "app",
 
-  // 3. [CORREÇÃO] Diz onde o VS Code deve abrir o projeto DENTRO do container "app".
-  //    (Este era o erro "propriedade 'workspaceFolder' está ausente")
+  // 3. [REMOVIDO] "image" não é mais usada aqui
+  //    (Resolve "propriedade 'image' não é permitida")
+
+  // 4. Diz onde o VS Code deve abrir (caminho dentro do container)
   "workspaceFolder": "/workspace/findash",
 
-  // 4. [REMOVIDO] A propriedade "image" foi removida daqui
-  //    (Este era o erro "propriedade 'image' não é permitida")
-
-  // 5. Quais serviços do docker-compose.yml devem subir JUNTOS
-  //    (Deixamos "app" de fora, pois o "service" já cuida dele)
+  // 5. Quais serviços extras devem subir juntos
   "runServices": ["postgres-db", "rabbitmq"],
 
-  // 6. Diz ao Codespaces para parar os containers quando fechar o VS Code
   "shutdownAction": "stopCompose",
 
+  // 6. Features serão instaladas DENTRO do serviço "app"
   "features": {
-    // Esta linha específica instala o Git LFS
     "ghcr.io/devcontainers/features/git-lfs:1": {}
   },
 
-  // 7. Instala extensões úteis do VS Code no Codespace
+  // 7. Extensões (continua igual)
   "customizations": {
     "vscode": {
       "extensions": [
@@ -41,9 +38,9 @@
     }
   },
 
-  // 8. Encaminha as portas dos serviços para você
+  // 8. Encaminha as portas (continua igual)
   "forwardPorts": [5432, 15672, 8080, 8081, 8082, 3000],
 
-  // 9. Comando para rodar DEPOIS que tudo estiver pronto (Dentro do container "app")
-  "postCreateCommand": "java -version"
+  // 9. Comando pós-criação (continua igual)
+  "postCreateCommand": "java -version && git lfs --version"
 }
