@@ -1,9 +1,11 @@
 package com.findash.account_service.service;
 
-import org.springframework.stereotype.Service;
-import com.findash.account_service.repository.UserRepository;
-import com.findash.account_service.model.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.findash.account_service.dto.LoginRequest;
+import com.findash.account_service.model.User;
+import com.findash.account_service.repository.UserRepository;
 
 @Service
 public class AuthService {
@@ -24,4 +26,15 @@ public class AuthService {
         User user = new User(name, email, encodedPassword);
         userRepository.save(user);
     }
+
+    public void loginUser(LoginRequest request) {
+        User user = userRepository.findByEmail(request.email())
+            .orElseThrow(() -> new IllegalArgumentException("Email or password incorrect!"));
+        
+
+        if (passwordEncoder.matches(request.password(), user.getPassword())){
+            
+        }
+    }
+        
 }

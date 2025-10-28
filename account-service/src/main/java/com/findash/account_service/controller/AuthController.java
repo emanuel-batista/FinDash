@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.findash.account_service.dto.RegisterRequest;
 
+
 import com.findash.account_service.service.AuthService;
 
 @RestController
