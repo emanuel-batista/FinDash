@@ -19,7 +19,8 @@
         "pivotal.vscode-spring-boot",
         "vmware.vscode-spring-boot-dashboard",
         "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint"
+        "dbaeumer.vscode-eslint",
+        "rangav.vscode-thunder-client"
       ]
     }
   },
