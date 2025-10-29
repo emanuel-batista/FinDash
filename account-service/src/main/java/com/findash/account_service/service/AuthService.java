@@ -11,10 +11,12 @@ import com.findash.account_service.repository.UserRepository;
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
 
@@ -27,13 +29,16 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public void loginUser(LoginRequest request) {
+    public String loginUser(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
             .orElseThrow(() -> new IllegalArgumentException("Email or password incorrect!"));
         
 
         if (passwordEncoder.matches(request.password(), user.getPassword())){
-            
+            String token = jwtService.generateToken(user.getEmail());
+            return token;
+        }else{
+            throw new IllegalArgumentException("Email or password incorrect!");
         }
     }
         
